@@ -62,6 +62,7 @@ def verificar():
         save_csv()
         return
     df = pd.read_csv('post.csv', delimiter=';')
+    
     lista_card = site(URL)
     visto = df['titulo'].values.tolist()
     for item in lista_card:
@@ -72,7 +73,6 @@ def verificar():
             imagem = item["imagem"].split('/')[-1]
             if item["titulo"] is not None and item["descricao"] is not None :
                 mensagem = item["titulo"] + " " + item["descricao"] + " " + "#BBB23 #RealitysBR "
-            #postar_twitter(item["titulo"] + " " + item["descricao"] + " " + "#BBB23 #CasaDeVidro")
             executar(imagem, mensagem)
             os.remove('files/' + imagem)
     df.to_csv('post.csv', sep=';', index=False)
@@ -84,21 +84,16 @@ def page_login(usuario, senha, page, URL):
     page.fill('input[name="password"]', senha)
     page.locator('div[role="button"]',has_text='Entrar').click()
 
-    time.sleep(5)
 
 def post_tweet(page, mensagem, path):
     page.fill('div[data-testid="tweetTextarea_0"]',mensagem)
     post_media(page, path)
     page.mouse.click(1323, 760);
     page.mouse.click(1323, 760);
-    print('cliquei')
     page.get_by_test_id("tweetButtonInline").click()
-    time.sleep(3)
 
 def post_media(page, path):
-    time.sleep(6)
     page.get_by_test_id('fileInput').set_input_files(path)
-    time.sleep(6)
 
 def executar(imagem, texto):
     ## Configuração de usuario
@@ -115,7 +110,7 @@ def executar(imagem, texto):
 
 def main():
     verificar()
-    
+
 
 if __name__ == "__main__":
     while True:
